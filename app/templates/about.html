@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>About Us | GroceNow</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/open-iconic-bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/animate.css') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/owl.theme.default.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/aos.css') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ionicons.min.css') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-datepicker.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.timepicker.css') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/flaticon.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/icomoon.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+      /* About page only */
+      .about-page-hero .bread { letter-spacing: 0.05em; }
+      .about-story-card {
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+        overflow: hidden;
+        background: #fff;
+      }
+      .about-story-card .img-2 {
+        min-height: 420px;
+        background-size: cover;
+        background-position: center;
+      }
+      .about-pill {
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #7fad39;
+        margin-bottom: 0.75rem;
+      }
+      .about-value-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+        height: 100%;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        padding: 1.75rem;
+      }
+      .about-value-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 14px 36px rgba(0,0,0,0.08);
+      }
+      .about-value-card .icon-wrap {
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
+        background: rgba(127, 173, 57, 0.12);
+        color: #7fad39;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.35rem;
+        margin-bottom: 1.25rem;
+      }
+      .about-value-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #1a1a1a; }
+      .about-value-card p { color: #666; font-size: 0.95rem; margin: 0; line-height: 1.65; }
+      .about-newsletter-panel {
+        border-radius: 12px;
+        box-shadow: 0 6px 28px rgba(0,0,0,0.06);
+      }
+    </style>
+  </head>
+  <body class="goto-here">
+		<div class="py-1 bg-primary">
+    	<div class="container">
+    		<div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
+	    		<div class="col-lg-12 d-block">
+		    		<div class="row d-flex">
+		    			<div class="col-md pr-4 d-flex topper align-items-center">
+					    	<div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-phone2"></span></div>
+						    <span class="text">+ 1235 2355 98</span>
+					    </div>
+					    <div class="col-md pr-4 d-flex topper align-items-center">
+					    	<div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-paper-plane"></span></div>
+						    <span class="text">youremail@email.com</span>
+					    </div>
+					    <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
+						    <span class="text">3-5 Business days delivery &amp; Free Returns</span>
+					    </div>
+				    </div>
+			    </div>
+		    </div>
+		  </div>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container">
+	      <a class="navbar-brand" href="{{ url_for('user_pages.load_page', page='index') }}">GroceNow</a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> Menu
+	      </button>
+
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	          <li class="nav-item">
+  <a href="{{ url_for('user_pages.load_page', page='index') }}" class="nav-link">Home</a>
+</li>
+	          <li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
+     aria-haspopup="true" aria-expanded="false">Shop</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown04">
+    <a class="dropdown-item" href="{{ url_for('user_pages.load_page', page='shop') }}">Shop</a>
+    <a class="dropdown-item" href="{{ url_for('user_pages.load_page', page='wishlist') }}">Wishlist</a>
+    <a class="dropdown-item" href="{{ url_for('user_pages.load_page', page='product-single') }}">Single Product</a>
+    <a class="dropdown-item" href="{{ url_for('user_pages.load_page', page='cart') }}">Cart</a>
+    <a class="dropdown-item" href="{{ url_for('user_pages.load_page', page='checkout') }}">Checkout</a>
+  </div>
+</li>
+
+	         <li class="nav-item cta cta-colored">
+  <a href="{{ url_for('user_pages.load_page', page='about') }}" class="nav-link">About</a>
+</li>
+
+<li class="nav-item">
+  <a href="{{ url_for('user_pages.load_page', page='blog') }}" class="nav-link">Blog</a>
+</li>
+
+<li class="nav-item">
+  <a href="{{ url_for('user_pages.load_page', page='contact') }}" class="nav-link">Contact</a>
+</li>
+
+<li class="nav-item">
+  <a href="{{ url_for('user_pages.load_page', page='login') }}" class="nav-link">
+    <span class="icon-user"></span> Login
+  </a>
+</li>
+	          <li class="nav-item">
+  <a href="{{ url_for('user_pages.load_page', page='cart') }}" class="nav-link">
+    <span class="icon-shopping_cart"></span>[0]
+  </a>
+</li>
+
+
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+    <!-- END nav -->
+
+    <div class="hero-wrap hero-bread about-page-hero"
+         style="background-image: url('{{ url_for('static', filename='images/bg_1.jpg') }}');">
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+            <p class="breadcrumbs">
+              <span class="mr-2"><a href="{{ url_for('user_pages.load_page', page='index') }}">Home</a></span>
+              <span class="mr-2">/</span>
+              <span>About</span>
+            </p>
+            <h1 class="mb-2 bread">About GroceNow</h1>
+            <p class="mb-0" style="font-size: 1rem; color: rgba(255,255,255,0.92); max-width: 36rem; margin-left: auto; margin-right: auto;">
+              Fresh groceries, fair prices, and dependable delivery for homes across Navi Mumbai.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="ftco-section ftco-no-pb ftco-no-pt bg-light">
+      <div class="container">
+        <div class="row align-items-stretch">
+          <div class="col-lg-5 mb-4 mb-lg-0 ftco-animate">
+            <div class="about-story-card h-100">
+              <div class="img img-2 w-100"
+                   style="background-image: url({{ url_for('static', filename='images/about.jpg') }}); min-height: 420px;">
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-7 py-4 py-lg-5 pl-lg-5 ftco-animate wrap-about">
+            <span class="about-pill">Our story</span>
+            <h2 class="mb-4" style="font-weight: 600; color: #1a1a1a;">Groceries made simple, from cart to doorstep</h2>
+            <p class="text-muted" style="line-height: 1.75;">
+              GroceNow is built for busy households that still want fresh fruit, vegetables, dairy, and daily essentials without the hassle of crowded stores. We connect you with curated products, clear pricing in rupees, and a checkout flow designed to be fast on mobile and desktop.
+            </p>
+            <p class="text-muted" style="line-height: 1.75;">
+              Whether you are stocking the pantry or ordering for the week, our focus is reliability: accurate listings, secure login, and support when you need it. Our mission is to make grocery shopping faster, easier, and more transparent for everyone we serve.
+            </p>
+            <ul class="list-unstyled mt-4 mb-4 text-muted small">
+              <li class="mb-2"><span class="icon icon-check mr-2" style="color:#7fad39;"></span> Wide range of fresh and packaged groceries</li>
+              <li class="mb-2"><span class="icon icon-check mr-2" style="color:#7fad39;"></span> Order tracking and account tools for customers</li>
+              <li class="mb-2"><span class="icon icon-check mr-2" style="color:#7fad39;"></span> Vendor partners working with us to fulfil demand</li>
+            </ul>
+            <p class="mb-0">
+              <a href="{{ url_for('user_pages.load_page', page='shop') }}" class="btn btn-primary px-4 py-3">Shop now</a>
+              <a href="{{ url_for('user_pages.load_page', page='contact') }}" class="btn btn-outline-primary px-4 py-3 ml-2 mt-2 mt-sm-0">Contact us</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ftco-section bg-white pt-0">
+      <div class="container">
+        <div class="row justify-content-center mb-5">
+          <div class="col-lg-8 text-center ftco-animate">
+            <span class="about-pill">What we stand for</span>
+            <h2 class="mb-3" style="font-weight: 600; color: #1a1a1a;">Why customers choose us</h2>
+            <p class="text-muted mb-0">Principles that guide how we build the GroceNow experience—online and behind the scenes.</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-lg-3 d-flex mb-4 ftco-animate">
+            <div class="bg-light about-value-card w-100">
+              <div class="icon-wrap"><span class="flaticon-diet"></span></div>
+              <h3>Freshness first</h3>
+              <p>We prioritize quality produce and staples so what you add to your cart matches what arrives at your door.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 d-flex mb-4 ftco-animate">
+            <div class="bg-light about-value-card w-100">
+              <div class="icon-wrap"><span class="flaticon-shipped"></span></div>
+              <h3>Dependable delivery</h3>
+              <p>Clear timelines and responsive support help you plan meals and orders with confidence.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 d-flex mb-4 ftco-animate">
+            <div class="bg-light about-value-card w-100">
+              <div class="icon-wrap"><span class="icon icon-lock"></span></div>
+              <h3>Secure &amp; simple</h3>
+              <p>Account-based shopping with sensible security—so your details stay protected.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 d-flex mb-4 ftco-animate">
+            <div class="bg-light about-value-card w-100">
+              <div class="icon-wrap"><span class="flaticon-customer-service"></span></div>
+              <h3>People who care</h3>
+              <p>From customer care to vendor partners, real humans stand behind every order.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+		<section class="ftco-section ftco-no-pt ftco-no-pb py-5 bg-light">
+      <div class="container py-4">
+        <div class="row d-flex justify-content-center align-items-center py-4 px-3 bg-white about-newsletter-panel">
+          <div class="col-md-6 mb-3 mb-md-0">
+          	<h2 style="font-size: 1.35rem; font-weight: 600;" class="mb-1">Subscribe to our newsletter</h2>
+          	<span class="text-muted small">Offers, seasonal picks, and grocery tips—no spam.</span>
+          </div>
+          <div class="col-md-6 d-flex align-items-center">
+            <form action="#" class="subscribe-form w-100" id="about-newsletter-form">
+              <div class="form-group d-flex mb-0">
+                <input type="email" name="email" class="form-control" placeholder="Your email address" required autocomplete="email" aria-label="Email for newsletter">
+                <input type="submit" value="Subscribe" class="submit px-3">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+		
+		<section class="ftco-section ftco-counter img" id="section-counter"
+         style="background-image: url({{ url_for('static', filename='images/bg_3.jpg') }});">
+    	<div class="container">
+    		<div class="row justify-content-center py-5">
+    			<div class="col-md-10">
+		    		<div class="row">
+		          <div class="col-md-3 d-flex justify-content-center counter-wrap ftco-animate">
+		            <div class="block-18 text-center">
+		              <div class="text">
+		                <strong class="number" data-number="500">0</strong>
+		                <span>Happy customers</span>
+		              </div>
+		            </div>
+		          </div>
+		          <div class="col-md-3 d-flex justify-content-center counter-wrap ftco-animate">
+		            <div class="block-18 text-center">
+		              <div class="text">
+		                <strong class="number" data-number="120">0</strong>
+		                <span>Products listed</span>
+		              </div>
+		            </div>
+		          </div>
+		          <div class="col-md-3 d-flex justify-content-center counter-wrap ftco-animate">
+		            <div class="block-18 text-center">
+		              <div class="text">
+		                <strong class="number" data-number="25">0</strong>
+		                <span>Vendor partners</span>
+		              </div>
+		            </div>
+		          </div>
+		          <div class="col-md-3 d-flex justify-content-center counter-wrap ftco-animate">
+		            <div class="block-18 text-center">
+		              <div class="text">
+		                <strong class="number" data-number="8">0</strong>
+		                <span>Delivery zones</span>
+		              </div>
+		            </div>
+		          </div>
+		        </div>
+	        </div>
+        </div>
+    	</div>
+    </section>
+		
+		<section class="ftco-section testimony-section">
+      <div class="container">
+        <div class="row justify-content-center mb-5 pb-3">
+          <div class="col-md-7 heading-section ftco-animate text-center">
+          	<span class="subheading">Testimonials</span>
+            <h2 class="mb-4">What our customers say</h2>
+            <p class="text-muted">Real feedback from shoppers who use GroceNow for weekly groceries and quick top-ups.</p>
+          </div>
+        </div>
+        <div class="row ftco-animate">
+          <div class="col-md-12">
+            <div class="carousel-testimony owl-carousel">
+              <div class="item">
+                <div class="testimony-wrap p-4 pb-5">
+                  <div class="user-img mb-5"
+                       style="background-image: url({{ url_for('static', filename='images/person_1.jpg') }});">
+                    <span class="quote d-flex align-items-center justify-content-center">
+                      <i class="icon-quote-left"></i>
+                    </span>
+                  </div>
+                  <div class="text text-center">
+                    <p class="mb-5 pl-4 line">GroceNow makes grocery shopping easy—fresh produce, fair prices, and delivery I can count on.</p>
+                    <p class="name">Aditya Sharma</p>
+                    <span class="position text-muted small">Navi Mumbai</span>
+                  </div>
+                </div>
+              </div>
+              <div class="item">
+                <div class="testimony-wrap p-4 pb-5">
+                  <div class="user-img mb-5"
+                       style="background-image: url({{ url_for('static', filename='images/person_2.jpg') }});">
+                    <span class="quote d-flex align-items-center justify-content-center">
+                      <i class="icon-quote-left"></i>
+                    </span>
+                  </div>
+                  <div class="text text-center">
+                    <p class="mb-5 pl-4 line">Orders arrive quickly and the packing is neat. Perfect when I don’t have time to visit the market.</p>
+                    <p class="name">Rahul Mehta</p>
+                    <span class="position text-muted small">Panvel</span>
+                  </div>
+                </div>
+              </div>
+              <div class="item">
+                <div class="testimony-wrap p-4 pb-5">
+                  <div class="user-img mb-5"
+                       style="background-image: url({{ url_for('static', filename='images/person_3.jpg') }});">
+                    <span class="quote d-flex align-items-center justify-content-center">
+                      <i class="icon-quote-left"></i>
+                    </span>
+                  </div>
+                  <div class="text text-center">
+                    <p class="mb-5 pl-4 line">Reliable service week after week. GroceNow saves me hours—especially on busy workdays.</p>
+                    <p class="name">Priyank Nair</p>
+                    <span class="position text-muted small">Sanpada</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ftco-section bg-light">
+			<div class="container">
+				<div class="row no-gutters ftco-services">
+          <div class="col-lg-3 text-center d-flex align-self-stretch ftco-animate">
+            <div class="media block-6 services mb-md-0 mb-4">
+              <div class="icon bg-color-1 active d-flex justify-content-center align-items-center mb-2">
+            		<span class="flaticon-shipped"></span>
+              </div>
+              <div class="media-body">
+                <h3 class="heading">Free shipping</h3>
+                <span>On orders over ₹100</span>
+              </div>
+            </div>      
+          </div>
+          <div class="col-lg-3 text-center d-flex align-self-stretch ftco-animate">
+            <div class="media block-6 services mb-md-0 mb-4">
+              <div class="icon bg-color-2 d-flex justify-content-center align-items-center mb-2">
+            		<span class="flaticon-diet"></span>
+              </div>
+              <div class="media-body">
+                <h3 class="heading">Always fresh</h3>
+                <span>Carefully packed for transit</span>
+              </div>
+            </div>    
+          </div>
+          <div class="col-lg-3 text-center d-flex align-self-stretch ftco-animate">
+            <div class="media block-6 services mb-md-0 mb-4">
+              <div class="icon bg-color-3 d-flex justify-content-center align-items-center mb-2">
+            		<span class="flaticon-award"></span>
+              </div>
+              <div class="media-body">
+                <h3 class="heading">Trusted quality</h3>
+                <span>Sourced with care</span>
+              </div>
+            </div>      
+          </div>
+          <div class="col-lg-3 text-center d-flex align-self-stretch ftco-animate">
+            <div class="media block-6 services mb-md-0 mb-4">
+              <div class="icon bg-color-4 d-flex justify-content-center align-items-center mb-2">
+            		<span class="flaticon-customer-service"></span>
+              </div>
+              <div class="media-body">
+                <h3 class="heading">Help when you need it</h3>
+                <span>Customer support &amp; FAQs</span>
+              </div>
+            </div>      
+          </div>
+        </div>
+			</div>
+		</section>
+
+    <footer class="ftco-footer ftco-section">
+      <div class="container">
+      	<div class="row">
+      		<div class="mouse">
+						<a href="#" class="mouse-icon">
+							<div class="mouse-wheel"><span class="ion-ios-arrow-up"></span></div>
+						</a>
+					</div>
+      	</div>
+        <div class="row mb-5">
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">GroceNow</h2>
+              <p>Your Daily Needs, Just a Tap Away.</p>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-5">
+              <h2 class="ftco-heading-2">Menu</h2>
+              <ul class="list-unstyled">
+                <li><a href="{{ url_for('user_pages.load_page', page='shop') }}">Shop</a></li>
+                <li><a href="{{ url_for('user_pages.load_page', page='index') }}">Home</a></li>
+                <li><a href="{{ url_for('user_pages.load_page', page='blog') }}">Blog</a></li>
+                <li><a href="{{ url_for('user_pages.load_page', page='contact') }}">Contact Us</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4">
+             <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Help</h2>
+              <div class="d-flex">
+	              <ul class="list-unstyled mr-l-5 pr-l-3 mr-4">
+	                <li><a href="{{ url_for('user_pages.load_page', page='contact') }}">Shipping Information</a></li>
+	                <li><a href="{{ url_for('user_pages.load_page', page='shop') }}">Returns &amp; Exchange</a></li>
+	                <li><a href="{{ url_for('user_pages.load_page', page='about') }}">Terms &amp; Conditions</a></li>
+	                <li><a href="{{ url_for('user_pages.load_page', page='about') }}">Privacy Policy</a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon icon-map-marker"></span><span class="text">Sanpada, Navi Mumbai, INDIA</span></li>
+	                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+91 1234567890</span></a></li>
+	                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">grocenow@email.com</span></a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+
+            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+						  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    
+  
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+   <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery-migrate-3.0.1.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.easing.1.3.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.waypoints.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.stellar.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.magnific-popup.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/aos.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.animateNumber.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap-datepicker.js') }}"></script>
+<script src="{{ url_for('static', filename='js/scrollax.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+  (function () {
+    var f = document.getElementById('about-newsletter-form');
+    if (!f) return;
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var input = f.querySelector('input[name="email"]');
+      if (input && input.value) {
+        alert('Thanks! We\'ll keep you posted at ' + input.value.trim());
+        f.reset();
+      }
+    });
+  })();
+</script>
+<script src="{{ url_for('static', filename='js/grocenow-store.js') }}"></script>
+   
+  </body>
+</html>

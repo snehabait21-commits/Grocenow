@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>My Account | GroceNow</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/open-iconic-bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.theme.default.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/aos.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ionicons.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-datepicker.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.timepicker.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flaticon.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/icomoon.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+      .account-card {
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        border: 1px solid #eef2f7;
+      }
+      .account-avatar {
+        width: 68px;
+        height: 68px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        color: #fff;
+        background: linear-gradient(135deg, #7fad39, #5f8f1e);
+      }
+      .meta-title {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #94a3b8;
+      }
+      .meta-value {
+        font-weight: 600;
+        color: #1f2937;
+      }
+      .account-stat {
+        border-radius: 12px;
+        background: #f8fafc;
+        border: 1px solid #edf2f7;
+      }
+      .account-stat .big {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .section-title {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .soft-muted {
+        color: #64748b;
+        font-size: 0.92rem;
+      }
+      .order-row {
+        border: 1px solid #edf2f7;
+        border-radius: 12px;
+        padding: 12px 14px;
+        background: #fff;
+      }
+      .status-chip {
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: capitalize;
+      }
+      .st-pending { background: #fff7ed; color: #c2410c; }
+      .st-confirmed { background: #ecfeff; color: #0e7490; }
+      .st-shipped { background: #eef2ff; color: #4338ca; }
+      .st-delivered { background: #ecfdf5; color: #166534; }
+      .st-cancelled { background: #fef2f2; color: #b91c1c; }
+      .address-item {
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px;
+        background: #fff;
+      }
+      .address-item.active {
+        border-color: #7fad39;
+        box-shadow: 0 0 0 2px rgba(127, 173, 57, 0.14);
+      }
+    </style>
+  </head>
+  <body class="goto-here">
+    <div class="py-1 bg-primary">
+      <div class="container">
+        <div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
+          <div class="col-lg-12 d-block">
+            <div class="row d-flex">
+              <div class="col-md pr-4 d-flex topper align-items-center">
+                <div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-phone2"></span></div>
+                <span class="text">+ 1235 2355 98</span>
+              </div>
+              <div class="col-md pr-4 d-flex topper align-items-center">
+                <div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-paper-plane"></span></div>
+                <span class="text">youremail@email.com</span>
+              </div>
+              <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
+                <span class="text">3-5 Business days delivery &amp; Free Returns</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+      <div class="container">
+        <a class="navbar-brand" href="{{ url_for('user_pages.load_page', page='index') }}">GROCENOW</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="oi oi-menu"></span> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="ftco-nav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item"><a href="{{ url_for('user_pages.load_page', page='index') }}" class="nav-link">Home</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown04">
+                <a class="dropdown-item" href="{{ url_for('user_pages.load_page', page='shop') }}">Shop</a>
+                <a class="dropdown-item" href="{{ url_for('user_pages.load_page', page='wishlist') }}">Wishlist</a>
+                <a class="dropdown-item" href="{{ url_for('user_pages.load_page', page='product-single') }}">Single Product</a>
+                <a class="dropdown-item" href="{{ url_for('user_pages.load_page', page='cart') }}">Cart</a>
+                <a class="dropdown-item" href="{{ url_for('user_pages.load_page', page='checkout') }}">Checkout</a>
+              </div>
+            </li>
+            <li class="nav-item"><a href="{{ url_for('user_pages.load_page', page='about') }}" class="nav-link">About</a></li>
+            <li class="nav-item"><a href="{{ url_for('user_pages.load_page', page='blog') }}" class="nav-link">Blog</a></li>
+            <li class="nav-item"><a href="{{ url_for('user_pages.load_page', page='contact') }}" class="nav-link">Contact</a></li>
+            <li class="nav-item">
+              <a href="{{ url_for('user_pages.load_page', page='login') }}" class="nav-link">
+                <span class="icon-user"></span> Login
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ url_for('user_pages.load_page', page='cart') }}" class="nav-link">
+                <span class="icon-shopping_cart"></span>[0]
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="hero-wrap hero-bread" style="background-image: url('{{ url_for('static', filename='images/bg_1.jpg') }}');">
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+            <p class="breadcrumbs"><span class="mr-2"><a href="{{ url_for('user_pages.load_page', page='index') }}">Home</a></span> <span>My Account</span></p>
+            <h1 class="mb-0 bread">My Account</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="ftco-section bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mb-4">
+            <div class="account-card p-4 p-md-5">
+              <div class="d-flex align-items-center mb-4">
+                <div class="account-avatar mr-3">
+                  {{ (customer_user.name[0] if customer_user and customer_user.name else 'U')|upper }}
+                </div>
+                <div>
+                  <h3 class="mb-1" id="accName">{{ customer_user.name if customer_user else 'Guest User' }}</h3>
+                  <p class="mb-0 text-muted" id="accEmail">{{ customer_user.email if customer_user else 'Please login to view your account.' }}</p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <div class="meta-title">Username</div>
+                  <div class="meta-value" id="accNameMeta">{{ customer_user.name if customer_user else '-' }}</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div class="meta-title">Email</div>
+                  <div class="meta-value" id="accEmailMeta">{{ customer_user.email if customer_user else '-' }}</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div class="meta-title">Role</div>
+                  <div class="meta-value text-capitalize">{{ customer_user.role if customer_user else 'guest' }}</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div class="meta-title">Status</div>
+                  <div class="meta-value">{{ 'Active' if customer_user else 'Not logged in' }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="account-card p-4 p-md-5 mt-4">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="section-title mb-0">Order History</h4>
+                <span class="soft-muted" id="ordersCountLabel">0 orders</span>
+              </div>
+              <p class="soft-muted mb-3">Track your latest orders and delivery status.</p>
+              <div id="accountOrdersWrap">
+                <div class="soft-muted">Loading your orders...</div>
+              </div>
+            </div>
+
+            <div class="account-card p-4 p-md-5 mt-4">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="section-title mb-0">Address Book</h4>
+                <button type="button" class="btn btn-sm btn-outline-primary" id="toggleAddressFormBtn">Add new</button>
+              </div>
+              <p class="soft-muted mb-3">Save addresses for faster checkout.</p>
+
+              <form id="addressForm" class="mb-4" style="display:none;">
+                <input type="hidden" id="addrId">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label class="small text-muted mb-1">Full name</label>
+                    <input type="text" class="form-control" id="addrName" required>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label class="small text-muted mb-1">Phone</label>
+                    <input type="text" class="form-control" id="addrPhone" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="small text-muted mb-1">Address line</label>
+                  <input type="text" class="form-control" id="addrLine" required>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-5">
+                    <label class="small text-muted mb-1">City</label>
+                    <input type="text" class="form-control" id="addrCity" required>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label class="small text-muted mb-1">State</label>
+                    <input type="text" class="form-control" id="addrState" required>
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label class="small text-muted mb-1">Pincode</label>
+                    <input type="text" class="form-control" id="addrPincode" required>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center">
+                  <button type="submit" class="btn btn-primary btn-sm mr-2">Save address</button>
+                  <button type="button" class="btn btn-light btn-sm" id="cancelAddressBtn">Cancel</button>
+                </div>
+              </form>
+
+              <div id="addressListWrap">
+                <div class="soft-muted">No addresses saved yet.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="account-card p-4 mb-4 account-stat">
+              <div class="meta-title">Cart items</div>
+              <div class="big" id="accountCartCount">0</div>
+              <a href="{{ url_for('user_pages.load_page', page='cart') }}" class="btn btn-sm btn-outline-primary mt-2">Open cart</a>
+            </div>
+            <div class="account-card p-4 mb-4 account-stat">
+              <div class="meta-title">Wishlist items</div>
+              <div class="big" id="accountWishlistCount">0</div>
+              <a href="{{ url_for('user_pages.load_page', page='wishlist') }}" class="btn btn-sm btn-outline-primary mt-2">Open wishlist</a>
+            </div>
+            <div class="account-card p-4">
+              <div class="meta-title mb-2">Quick actions</div>
+              <a href="{{ url_for('user_pages.load_page', page='shop') }}" class="btn btn-primary btn-block mb-2">Continue shopping</a>
+              <a href="{{ url_for('user_pages.load_page', page='checkout') }}" class="btn btn-outline-dark btn-block mb-2">Go to checkout</a>
+              <a href="{{ url_for('user_pages.logout') }}" class="btn btn-outline-danger btn-block">Logout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-migrate-3.0.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.easing.1.3.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.waypoints.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.stellar.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/aos.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.animateNumber.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/scrollax.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/grocenow-store.js') }}"></script>
+    <script>
+      (function () {
+        function safeParse(key) {
+          try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch (_) { return []; }
+        }
+        function getUserScope() {
+          try {
+            var u = JSON.parse(localStorage.getItem('customer_user') || '{}');
+            if (u && u.email) return String(u.email).toLowerCase();
+          } catch (_) {}
+          return 'guest';
+        }
+        function fillCounts() {
+          var scope = getUserScope();
+          var cart = safeParse('grocenow_cart_' + scope);
+          var wishlist = safeParse('grocenow_wishlist_' + scope);
+          var cartCount = cart.reduce(function(sum, item) { return sum + (item.qty || 1); }, 0);
+          document.getElementById('accountCartCount').textContent = String(cartCount);
+          document.getElementById('accountWishlistCount').textContent = String(wishlist.length);
+        }
+        function fillUserFromLocalStorage() {
+          try {
+            var user = JSON.parse(localStorage.getItem('customer_user') || '{}');
+            if (!user || !user.email) return;
+            var n = user.name || 'Customer';
+            var e = user.email || '';
+            var el;
+            el = document.getElementById('accName'); if (el) el.textContent = n;
+            el = document.getElementById('accEmail'); if (el) el.textContent = e;
+            el = document.getElementById('accNameMeta'); if (el) el.textContent = n;
+            el = document.getElementById('accEmailMeta'); if (el) el.textContent = e;
+          } catch (_) {}
+        }
+        function money(v) {
+          var n = Number(v || 0);
+          return '₹' + n.toFixed(2);
+        }
+        function getToken() {
+          return localStorage.getItem('token') || '';
+        }
+        function statusClass(st) {
+          var s = String(st || 'pending').toLowerCase();
+          if (s === 'confirmed') return 'st-confirmed';
+          if (s === 'shipped') return 'st-shipped';
+          if (s === 'delivered') return 'st-delivered';
+          if (s === 'cancelled') return 'st-cancelled';
+          return 'st-pending';
+        }
+        function loadOrders() {
+          var wrap = document.getElementById('accountOrdersWrap');
+          var label = document.getElementById('ordersCountLabel');
+          if (!wrap || !label) return;
+          var token = getToken();
+          if (!token) {
+            wrap.innerHTML = '<div class=\"soft-muted\">Login to view order history.</div>';
+            label.textContent = '0 orders';
+            return;
+          }
+          fetch('/api/user/orders', {
+            method: 'GET',
+            headers: { 'Authorization': 'Bearer ' + token }
+          })
+          .then(function (res) {
+            if (!res.ok) throw new Error('Failed');
+            return res.json();
+          })
+          .then(function (data) {
+            var list = (data && data.orders) ? data.orders : [];
+            label.textContent = String(list.length) + ' orders';
+            if (!list.length) {
+              wrap.innerHTML = '<div class=\"soft-muted\">No orders found yet.</div>';
+              return;
+            }
+            wrap.innerHTML = list.slice(0, 8).map(function (o) {
+              var pname = (o.product && o.product.name) ? o.product.name : 'Product';
+              var qty = Number(o.quantity || 0);
+              var total = (o.product && o.product.price) ? Number(o.product.price) * qty : 0;
+              var dt = (o.order_date || '').slice(0, 10) || '-';
+              var st = o.status || 'pending';
+              return '' +
+                '<div class=\"order-row mb-2\">' +
+                  '<div class=\"d-flex justify-content-between align-items-start\">' +
+                    '<div>' +
+                      '<div class=\"font-weight-bold\">' + pname + '</div>' +
+                      '<div class=\"soft-muted\">Order #' + (o.id || '-') + ' • Qty: ' + qty + ' • ' + dt + '</div>' +
+                    '</div>' +
+                    '<div class=\"text-right\">' +
+                      '<div class=\"font-weight-bold\">' + money(total) + '</div>' +
+                      '<span class=\"status-chip ' + statusClass(st) + '\">' + st + '</span>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>';
+            }).join('');
+          })
+          .catch(function () {
+            wrap.innerHTML = '<div class=\"soft-muted\">Unable to load order history right now.</div>';
+            label.textContent = '0 orders';
+          });
+        }
+        function mapAddressFromApi(a) {
+          return {
+            id: a.id,
+            name: a.full_name,
+            phone: a.phone,
+            line: a.address_line,
+            city: a.city,
+            state: a.state,
+            pincode: a.pincode,
+            isDefault: !!a.is_default
+          };
+        }
+        function apiAddressList() {
+          var token = getToken();
+          if (!token) return Promise.resolve([]);
+          return fetch('/api/user/addresses', {
+            method: 'GET',
+            headers: { 'Authorization': 'Bearer ' + token }
+          })
+          .then(function (res) {
+            if (!res.ok) throw new Error('Failed');
+            return res.json();
+          })
+          .then(function (data) {
+            var list = (data && data.addresses) ? data.addresses : [];
+            return list.map(mapAddressFromApi);
+          })
+          .catch(function () { return []; });
+        }
+        function renderAddresses() {
+          var wrap = document.getElementById('addressListWrap');
+          if (!wrap) return;
+          var token = getToken();
+          if (!token) {
+            wrap.innerHTML = '<div class=\"soft-muted\">Login to manage your addresses.</div>';
+            return;
+          }
+          apiAddressList().then(function (list) {
+            if (!list.length) {
+              wrap.innerHTML = '<div class=\"soft-muted\">No addresses saved yet.</div>';
+              return;
+            }
+            wrap.innerHTML = list.map(function (a) {
+              return '' +
+                '<div class=\"address-item mb-2 ' + (a.isDefault ? 'active' : '') + '\">' +
+                  '<div class=\"d-flex justify-content-between\">' +
+                    '<div>' +
+                      '<div class=\"font-weight-bold\">' + (a.name || '-') + ' <span class=\"soft-muted\">(' + (a.phone || '-') + ')</span></div>' +
+                      '<div class=\"soft-muted\">' + (a.line || '-') + ', ' + (a.city || '-') + ', ' + (a.state || '-') + ' - ' + (a.pincode || '-') + '</div>' +
+                    '</div>' +
+                    '<div class=\"text-right\">' +
+                      '<button type=\"button\" class=\"btn btn-sm btn-light mb-1 edit-addr\" data-id=\"' + a.id + '\">Edit</button><br>' +
+                      '<button type=\"button\" class=\"btn btn-sm btn-outline-danger del-addr\" data-id=\"' + a.id + '\">Delete</button>' +
+                    '</div>' +
+                  '</div>' +
+                  '<div class=\"mt-2\">' +
+                    (a.isDefault ? '<span class=\"badge badge-success\">Default</span>' : '<button type=\"button\" class=\"btn btn-sm btn-outline-primary set-default\" data-id=\"' + a.id + '\">Set as default</button>') +
+                  '</div>' +
+                '</div>';
+            }).join('');
+
+            wrap.querySelectorAll('.edit-addr').forEach(function (b) {
+              b.addEventListener('click', function () {
+                var id = this.getAttribute('data-id');
+                var item = list.find(function (x) { return String(x.id) === String(id); });
+                if (!item) return;
+                document.getElementById('addrId').value = item.id;
+                document.getElementById('addrName').value = item.name || '';
+                document.getElementById('addrPhone').value = item.phone || '';
+                document.getElementById('addrLine').value = item.line || '';
+                document.getElementById('addrCity').value = item.city || '';
+                document.getElementById('addrState').value = item.state || '';
+                document.getElementById('addrPincode').value = item.pincode || '';
+                document.getElementById('addressForm').style.display = 'block';
+              });
+            });
+            wrap.querySelectorAll('.del-addr').forEach(function (b) {
+              b.addEventListener('click', function () {
+                var id = this.getAttribute('data-id');
+                fetch('/api/user/addresses/' + id, {
+                  method: 'DELETE',
+                  headers: { 'Authorization': 'Bearer ' + token }
+                }).then(function () { renderAddresses(); });
+              });
+            });
+            wrap.querySelectorAll('.set-default').forEach(function (b) {
+              b.addEventListener('click', function () {
+                var id = this.getAttribute('data-id');
+                fetch('/api/user/addresses/' + id + '/default', {
+                  method: 'PUT',
+                  headers: { 'Authorization': 'Bearer ' + token }
+                }).then(function () { renderAddresses(); });
+              });
+            });
+          });
+        }
+        function bindAddressForm() {
+          var form = document.getElementById('addressForm');
+          var toggle = document.getElementById('toggleAddressFormBtn');
+          var cancel = document.getElementById('cancelAddressBtn');
+          if (!form) return;
+          if (toggle) {
+            toggle.addEventListener('click', function () {
+              form.style.display = (form.style.display === 'none' || !form.style.display) ? 'block' : 'none';
+            });
+          }
+          if (cancel) {
+            cancel.addEventListener('click', function () {
+              form.reset();
+              document.getElementById('addrId').value = '';
+              form.style.display = 'none';
+            });
+          }
+          form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var token = getToken();
+            if (!token) return;
+            var id = document.getElementById('addrId').value;
+            var payload = {
+              full_name: document.getElementById('addrName').value.trim(),
+              phone: document.getElementById('addrPhone').value.trim(),
+              address_line: document.getElementById('addrLine').value.trim(),
+              city: document.getElementById('addrCity').value.trim(),
+              state: document.getElementById('addrState').value.trim(),
+              pincode: document.getElementById('addrPincode').value.trim()
+            };
+            if (!payload.full_name || !payload.phone || !payload.address_line || !payload.city || !payload.state || !payload.pincode) return;
+
+            var url = '/api/user/addresses' + (id ? '/' + id : '');
+            var method = id ? 'PUT' : 'POST';
+            fetch(url, {
+              method: method,
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+              },
+              body: JSON.stringify(payload)
+            }).then(function (res) {
+              if (!res.ok) throw new Error('Failed');
+              return res.json();
+            }).then(function () {
+              form.reset();
+              document.getElementById('addrId').value = '';
+              form.style.display = 'none';
+              renderAddresses();
+            }).catch(function () {});
+          });
+        }
+        fillUserFromLocalStorage();
+        fillCounts();
+        loadOrders();
+        bindAddressForm();
+        renderAddresses();
+      })();
+    </script>
+  </body>
+</html>

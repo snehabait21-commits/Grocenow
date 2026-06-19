@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard - GroceNow</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    :root { --sidebar: 250px; --brand: #0ea5e9; --dark: #0b1220; }
+    body { background:#f3f5f9; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .sidebar {
+      position: fixed; left: 0; top: 0; width: var(--sidebar); height: 100vh;
+      background: linear-gradient(180deg, #0b1220 0%, #101c35 100%);
+      color: rgba(255,255,255,0.9); padding: 18px 14px;
+      box-shadow: 6px 0 28px rgba(2,6,23,0.25);
+    }
+    .brand { display:flex; align-items:center; gap:10px; padding: 8px 10px 18px; border-bottom:1px solid rgba(255,255,255,0.12); }
+    .brand .logo { width:38px; height:38px; border-radius:12px; display:flex; align-items:center; justify-content:center; background: rgba(14,165,233,0.18); color: #7dd3fc; }
+    .brand strong { color:#fff; }
+    .nav-link { color: rgba(255,255,255,0.86); border-radius: 10px; padding: 10px 12px; margin: 4px 6px; display:flex; align-items:center; gap:10px; }
+    .nav-link:hover { background: rgba(255,255,255,0.10); color:#fff; }
+    .nav-link.active { background: rgba(14,165,233,0.22); border: 1px solid rgba(125,211,252,0.28); color:#fff; }
+    .content { margin-left: var(--sidebar); padding: 22px; }
+    .card-soft { border: none; border-radius: 14px; box-shadow: 0 2px 16px rgba(15,23,42,0.08); }
+    .stat { display:flex; align-items:center; justify-content:space-between; }
+    .stat .icon { width:44px; height:44px; border-radius:14px; display:flex; align-items:center; justify-content:center; }
+    .icon.p { background: rgba(14,165,233,0.15); color:#0284c7; }
+    .icon.u { background: rgba(34,197,94,0.15); color:#16a34a; }
+    .icon.o { background: rgba(249,115,22,0.15); color:#ea580c; }
+    .metric { font-size: 28px; font-weight: 800; color:#0f172a; line-height:1; }
+    .label { color:#64748b; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo"><i class="bi bi-shield-check"></i></div>
+      <div>
+        <strong>GroceNow</strong>
+        <div class="small text-white-50">Admin Panel</div>
+      </div>
+    </div>
+    <nav class="mt-3">
+      <a class="nav-link active" href="{{ url_for('admin.admin_dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a class="nav-link" href="{{ url_for('admin.admin_products') }}"><i class="bi bi-box-seam"></i> Products</a>
+      <a class="nav-link" href="{{ url_for('admin.admin_logout') }}"><i class="bi bi-box-arrow-left"></i> Logout</a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <div>
+        <div class="h4 mb-0 fw-bold text-dark">Ecommerce Dashboard</div>
+        <div class="text-muted small">Here’s what’s going on with your business right now</div>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-md-4">
+        <div class="card card-soft p-3">
+          <div class="stat">
+            <div>
+              <div class="metric">{{ total_products }}</div>
+              <div class="label">Total Products</div>
+            </div>
+            <div class="icon p"><i class="bi bi-box-seam"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card card-soft p-3">
+          <div class="stat">
+            <div>
+              <div class="metric">{{ total_users }}</div>
+              <div class="label">Total Users</div>
+            </div>
+            <div class="icon u"><i class="bi bi-people"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card card-soft p-3">
+          <div class="stat">
+            <div>
+              <div class="metric">{{ total_orders }}</div>
+              <div class="label">Total Orders</div>
+            </div>
+            <div class="icon o"><i class="bi bi-cart-check"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="card card-soft">
+          <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <div class="fw-semibold"><i class="bi bi-graph-up me-2"></i>Sales (last 7 days)</div>
+            </div>
+            <canvas id="salesChart" height="120"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card card-soft">
+          <div class="card-body">
+            <div class="fw-semibold mb-2"><i class="bi bi-pie-chart me-2"></i>Orders by Status</div>
+            <canvas id="statusChart" height="140"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>
+    const labels = {{ chart_labels|tojson }};
+    const orders = {{ chart_orders|tojson }};
+    const revenue = {{ chart_revenue|tojson }};
+    const statusLabels = {{ status_labels|tojson }};
+    const statusCounts = {{ status_counts|tojson }};
+
+    const ctx = document.getElementById('salesChart');
+    if (ctx) {
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            { label: 'Orders', data: orders, borderColor: '#0ea5e9', backgroundColor: 'rgba(14,165,233,0.12)', tension: 0.35, fill: true },
+            { label: 'Revenue', data: revenue, borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.10)', tension: 0.35, fill: false, yAxisID: 'y1' }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { position: 'bottom' } },
+          scales: {
+            y: { beginAtZero: true },
+            y1: { beginAtZero: true, position: 'right', grid: { drawOnChartArea: false } }
+          }
+        }
+      });
+    }
+
+    const ctx2 = document.getElementById('statusChart');
+    if (ctx2) {
+      new Chart(ctx2, {
+        type: 'doughnut',
+        data: { labels: statusLabels, datasets: [{ data: statusCounts, backgroundColor: ['#0ea5e9','#f97316','#22c55e','#a855f7','#ef4444'] }] },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+      });
+    }
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vendor Dashboard - GroceNow</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    :root { --sidebar-width: 240px; --vendor-primary: #198754; --vendor-dark: #0d3320; }
+    body { min-height: 100vh; background: #f0f2f5; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .vendor-sidebar {
+      width: var(--sidebar-width); min-height: 100vh; position: fixed; left: 0; top: 0; z-index: 100;
+      background: linear-gradient(180deg, #0d3320 0%, #14532d 50%, #166534 100%);
+      box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+    }
+    .vendor-sidebar .brand { padding: 1.25rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.15); }
+    .vendor-sidebar .brand strong { color: #fff; font-size: 1.1rem; }
+    .vendor-sidebar .brand small { color: rgba(255,255,255,0.7); font-size: 0.75rem; }
+    .vendor-sidebar .nav-link {
+      color: rgba(255,255,255,0.9); border-radius: 8px; margin: 2px 12px; padding: 0.6rem 12px;
+      display: flex; align-items: center;
+    }
+    .vendor-sidebar .nav-link i { margin-right: 10px; font-size: 1.1rem; opacity: 0.9; }
+    .vendor-sidebar .nav-link:hover { background: rgba(255,255,255,0.15); color: #fff; }
+    .vendor-sidebar .nav-link.active { background: var(--vendor-primary); color: #fff; }
+    .vendor-sidebar .nav-link.logout { color: #fca5a5; margin-top: 1rem; }
+    .vendor-sidebar .nav-link.logout:hover { background: rgba(252,165,165,0.2); color: #fca5a5; }
+    .vendor-main { margin-left: var(--sidebar-width); padding: 1.5rem; min-height: 100vh; }
+    .page-title { font-size: 1.5rem; font-weight: 600; color: #1a1a2e; margin-bottom: 1.25rem; }
+    .stat-card {
+      border: none; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 1.25rem; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,0.12); }
+    .stat-card .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+    .stat-card.products .stat-icon { background: rgba(21,128,61,0.2); color: var(--vendor-primary); }
+    .stat-card.orders .stat-icon { background: rgba(249,115,22,0.2); color: #f97316; }
+    .stat-card.revenue .stat-icon { background: rgba(59,130,246,0.2); color: #3b82f6; }
+    .stat-card .stat-value { font-size: 1.75rem; font-weight: 700; color: #1a1a2e; }
+    .stat-card .stat-label { color: #64748b; font-size: 0.875rem; }
+    .content-card { border: none; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); overflow: hidden; }
+    .content-card .card-header { background: #fff; border-bottom: 1px solid #eee; font-weight: 600; padding: 1rem 1.25rem; }
+    .table th { font-weight: 600; color: #475569; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .status-pill { padding: 0.3rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; text-transform: capitalize; }
+    .status-pending { background: #fff7ed; color: #c2410c; }
+    .status-confirmed { background: #ecfeff; color: #0e7490; }
+    .status-shipped { background: #eef2ff; color: #4338ca; }
+    .status-delivered { background: #ecfdf5; color: #166534; }
+    .status-cancelled { background: #fef2f2; color: #b91c1c; }
+  </style>
+</head>
+<body>
+  <nav class="vendor-sidebar py-2">
+    <div class="brand">
+      <strong><i class="bi bi-shop me-2"></i>GroceNow</strong>
+      <small class="d-block mt-1">Vendor Panel</small>
+    </div>
+    <ul class="nav flex-column pt-3">
+      <li class="nav-item"><a class="nav-link active" href="/vendor/dashboard" data-section="dashboard"><i class="bi bi-speedometer2"></i>Dashboard</a></li>
+      <li class="nav-item"><a class="nav-link" href="/vendor/add-product" data-section="add-product"><i class="bi bi-plus-circle"></i>Add Product</a></li>
+      <li class="nav-item"><a class="nav-link" href="/vendor/my-products" data-section="my-products"><i class="bi bi-box-seam"></i>My Products</a></li>
+      <li class="nav-item"><a class="nav-link" href="/vendor/edit-product" data-section="edit-product"><i class="bi bi-pencil-square"></i>Edit Product</a></li>
+      <li class="nav-item"><a class="nav-link" href="/vendor/delete-product" data-section="delete-product"><i class="bi bi-trash"></i>Delete Product</a></li>
+      <li class="nav-item"><a class="nav-link" href="/vendor/orders" data-section="orders"><i class="bi bi-cart-check"></i>Orders</a></li>
+      <li class="nav-item"><a class="nav-link logout" href="#" id="logoutBtn"><i class="bi bi-box-arrow-left"></i>Logout</a></li>
+    </ul>
+  </nav>
+
+  <main class="vendor-main">
+    <div id="alertPlaceholder"></div>
+
+    <!-- Dashboard -->
+    <section id="section-dashboard" class="content-section">
+      <h1 class="page-title">Dashboard</h1>
+      <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-xl-4"><div class="card stat-card products"><div class="d-flex align-items-center"><div class="stat-icon me-3"><i class="bi bi-box-seam"></i></div><div><div class="stat-value" id="stat-products">-</div><div class="stat-label">Total Products</div></div></div></div></div>
+        <div class="col-sm-6 col-xl-4"><div class="card stat-card orders"><div class="d-flex align-items-center"><div class="stat-icon me-3"><i class="bi bi-cart-check"></i></div><div><div class="stat-value" id="stat-orders">-</div><div class="stat-label">Total Orders</div></div></div></div></div>
+        <div class="col-sm-6 col-xl-4"><div class="card stat-card revenue"><div class="d-flex align-items-center"><div class="stat-icon me-3"><i class="bi bi-currency-dollar"></i></div><div><div class="stat-value" id="stat-revenue">-</div><div class="stat-label">Total Revenue</div></div></div></div></div>
+      </div>
+      <div class="row g-3">
+        <div class="col-lg-6">
+          <div class="card content-card">
+            <div class="card-header"><i class="bi bi-graph-up me-2"></i>Revenue Trend</div>
+            <div class="card-body">
+              <canvas id="vendorRevenueChart" height="130"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card content-card">
+            <div class="card-header"><i class="bi bi-pie-chart me-2"></i>Orders by Status</div>
+            <div class="card-body">
+              <canvas id="vendorStatusChart" height="130"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6"><div class="card content-card"><div class="card-header"><i class="bi bi-exclamation-triangle me-2"></i>Low Stock</div><div class="card-body p-0"><ul id="low-stock-list" class="list-group list-group-flush"></ul></div></div></div>
+        <div class="col-lg-6"><div class="card content-card"><div class="card-header"><i class="bi bi-clock-history me-2"></i>Recent Orders</div><div class="card-body p-0"><div id="recent-orders-list" class="list-group list-group-flush"></div></div></div></div>
+      </div>
+    </section>
+
+    <!-- Add Product -->
+    <section id="section-add-product" class="content-section" style="display:none;">
+      <h1 class="page-title">Add Product</h1>
+      <div class="card content-card p-4" style="max-width: 500px;">
+        <form id="addProductForm">
+          <div class="mb-3"><label class="form-label">Name *</label><input type="text" class="form-control" id="add-name" required></div>
+          <div class="mb-3"><label class="form-label">Category *</label><select class="form-select" id="add-category"></select></div>
+          <div class="mb-3"><label class="form-label">Price *</label><input type="number" step="0.01" min="0.01" class="form-control" id="add-price" required></div>
+          <div class="mb-3"><label class="form-label">Stock quantity</label><input type="number" min="0" class="form-control" id="add-stock" value="0"></div>
+          <div class="mb-3"><label class="form-label">Description</label><textarea class="form-control" id="add-desc" rows="2"></textarea></div>
+          <button type="submit" class="btn btn-success">Add Product</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- My Products -->
+    <section id="section-my-products" class="content-section" style="display:none;">
+      <h1 class="page-title">My Products</h1>
+      <div class="card content-card"><div class="card-body"><div class="table-responsive"><table class="table table-hover mb-0"><thead><tr><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Updated</th></tr></thead><tbody id="my-products-tbody"></tbody></table></div><div id="my-products-pagination"></div></div></div>
+    </section>
+
+    <!-- Edit Product -->
+    <section id="section-edit-product" class="content-section" style="display:none;">
+      <h1 class="page-title">Edit Product</h1>
+      <div class="row">
+        <div class="col-md-5">
+          <label class="form-label">Select product</label>
+          <select class="form-select mb-3" id="edit-select"></select>
+          <div id="edit-form-wrap" style="display:none;">
+            <input type="hidden" id="edit-id">
+            <div class="mb-3"><label class="form-label">Price</label><input type="number" step="0.01" min="0.01" class="form-control" id="edit-price"></div>
+            <div class="mb-3"><label class="form-label">Stock quantity</label><input type="number" min="0" class="form-control" id="edit-stock"></div>
+            <button type="button" class="btn btn-primary" id="edit-save">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Delete Product -->
+    <section id="section-delete-product" class="content-section" style="display:none;">
+      <h1 class="page-title">Delete Product</h1>
+      <p class="text-muted">Select a product to delete. This cannot be undone.</p>
+      <div class="card content-card"><div class="card-body"><div class="table-responsive"><table class="table"><thead><tr><th>Name</th><th>Category</th><th>Price</th><th></th></tr></thead><tbody id="delete-products-tbody"></tbody></table></div></div></div>
+    </section>
+
+    <!-- Orders -->
+    <section id="section-orders" class="content-section" style="display:none;">
+      <h1 class="page-title">Orders</h1>
+      <div class="card content-card"><div class="card-body"><div class="table-responsive"><table class="table table-hover mb-0"><thead><tr><th>Order ID</th><th>Product</th><th>Qty</th><th>Total</th><th>Status</th><th>Update</th><th>Date</th></tr></thead><tbody id="orders-tbody"></tbody></table></div><div id="orders-pagination"></div></div></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>
+    // Backend API base (same origin when served by Flask at /vendor/dashboard)
+    var API_BASE = window.location.origin + '/api';
+    var token = localStorage.getItem('vendor_token');
+    var user = JSON.parse(localStorage.getItem('vendor_user') || '{}');
+
+    function headers() {
+      return {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      };
+    }
+
+    function showAlert(msg, type) {
+      document.getElementById('alertPlaceholder').innerHTML = '<div class="alert alert-' + type + ' alert-dismissible fade show">' + msg + '<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>';
+    }
+
+    function redirectIfUnauthorized(res) {
+      if (res.status === 401 || res.status === 403) {
+        localStorage.removeItem('vendor_token');
+        localStorage.removeItem('vendor_user');
+        window.location.href = '/vendor/login';
+        return true;
+      }
+      return false;
+    }
+
+    function apiGet(url) {
+      return fetch(API_BASE + url, { headers: headers() });
+    }
+
+    function apiPost(url, body) {
+      return fetch(API_BASE + url, { method: 'POST', headers: headers(), body: JSON.stringify(body) });
+    }
+
+    function apiPut(url, body) {
+      return fetch(API_BASE + url, { method: 'PUT', headers: headers(), body: JSON.stringify(body) });
+    }
+
+    function apiDelete(url) {
+      return fetch(API_BASE + url, { method: 'DELETE', headers: headers() });
+    }
+
+    async function checkAuth() {
+      if (!token || !user || user.role !== 'vendor') {
+        localStorage.removeItem('vendor_token');
+        localStorage.removeItem('vendor_user');
+        window.location.href = '/vendor/login';
+        return false;
+      }
+      try {
+        const r = await fetch(API_BASE + '/vendor/dashboard', { headers: headers() });
+        if (r.status === 401 || r.status === 403) {
+          localStorage.removeItem('vendor_token');
+          localStorage.removeItem('vendor_user');
+          window.location.href = '/vendor/login';
+          return false;
+        }
+        if (r.ok) return await r.json();
+      } catch (e) {
+        window.location.href = '/vendor/login';
+        return false;
+      }
+      return true;
+    }
+
+    function showSection(section, editId) {
+      document.querySelectorAll('.content-section').forEach(function(s) { s.style.display = 'none'; });
+      document.querySelectorAll('.vendor-sidebar .nav-link[data-section]').forEach(function(n) { n.classList.remove('active'); });
+      var sectionEl = document.getElementById('section-' + section);
+      if (sectionEl) {
+        sectionEl.style.display = 'block';
+        var path = '/vendor/' + (section === 'dashboard' ? 'dashboard' : section);
+        if (section === 'edit-product' && editId) path += '/' + editId;
+        if (window.history && window.history.pushState) window.history.pushState({}, '', path);
+      }
+      var activeLink = document.querySelector('.vendor-sidebar .nav-link[data-section="' + section + '"]');
+      if (activeLink) activeLink.classList.add('active');
+      if (section === 'dashboard') loadDashboard();
+      if (section === 'my-products') loadMyProducts();
+      if (section === 'edit-product') loadEditSelect(editId || null);
+      if (section === 'delete-product') loadDeleteProducts();
+      if (section === 'orders') loadOrders();
+    }
+
+    function setEditProductId(id) {
+      var sel = document.getElementById('edit-select');
+      if (!sel) return;
+      sel.value = String(id);
+      var opt = sel.options[sel.selectedIndex];
+      if (opt && opt.value) {
+        document.getElementById('edit-id').value = opt.value;
+        document.getElementById('edit-price').value = opt.getAttribute('data-price');
+        document.getElementById('edit-stock').value = opt.getAttribute('data-stock');
+        document.getElementById('edit-form-wrap').style.display = 'block';
+      }
+    }
+
+    function parsePath() {
+      var path = window.location.pathname.replace(/\/$/, '') || '/vendor/dashboard';
+      if (path === '/vendor' || path === '/vendor/dashboard') return { section: 'dashboard' };
+      if (path === '/vendor/add-product') return { section: 'add-product' };
+      if (path === '/vendor/my-products') return { section: 'my-products' };
+      if (path === '/vendor/orders') return { section: 'orders' };
+      if (path === '/vendor/delete-product') return { section: 'delete-product' };
+      var m = path.match(/^\/vendor\/edit-product\/(\d+)$/);
+      if (m) return { section: 'edit-product', editId: m[1] };
+      if (path === '/vendor/edit-product') return { section: 'edit-product' };
+      return { section: 'dashboard' };
+    }
+
+    document.querySelectorAll('.vendor-sidebar [data-section]').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        showSection(this.getAttribute('data-section'));
+      });
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', function(e) {
+      e.preventDefault();
+      localStorage.removeItem('vendor_token');
+      localStorage.removeItem('vendor_user');
+      window.location.href = '/vendor/login';
+    });
+
+    let dashboardData = null;
+
+    function loadDashboard() {
+      if (dashboardData) {
+        renderDashboard(dashboardData);
+        return;
+      }
+      apiGet('/vendor/dashboard')
+        .then(function(r) {
+          if (redirectIfUnauthorized(r)) return null;
+          return r.json().catch(function() { return { error: 'Invalid response' }; });
+        })
+        .then(function(data) {
+          if (!data) return;
+          if (data.error) { showAlert(data.error, 'danger'); return; }
+          dashboardData = data;
+          renderDashboard(data);
+        })
+        .catch(function() { showAlert('Cannot reach server. Ensure Flask is running.', 'danger'); });
+    }
+
+    var revenueChart = null;
+    var statusChart = null;
+
+    function renderDashboard(data) {
+      var s = data.summary || {};
+      document.getElementById('stat-products').textContent = s.total_products ?? '-';
+      document.getElementById('stat-orders').textContent = s.total_orders ?? '-';
+      document.getElementById('stat-revenue').textContent = (s.total_revenue != null ? '₹' + Number(s.total_revenue).toFixed(2) : '-');
+      var low = data.low_stock_alerts || [];
+      document.getElementById('low-stock-list').innerHTML = low.length ? low.map(function(p) { return '<li class="list-group-item d-flex justify-content-between"><span>' + (p.name || '') + '</span><span class="badge bg-warning">' + (p.stock_quantity ?? 0) + ' left</span></li>'; }).join('') : '<li class="list-group-item text-muted">No low stock</li>';
+      var recent = data.recent_orders || [];
+      document.getElementById('recent-orders-list').innerHTML = recent.length ? recent.slice(0, 8).map(function(o) { var tot = (o.order_total != null ? o.order_total : (o.quantity * (o.product && o.product.price || 0))); return '<div class="list-group-item list-group-item-action d-flex justify-content-between"><span>#' + (o.id || '') + ' ' + (o.product && o.product.name || '') + ' x' + (o.quantity || 0) + '</span><span class="text-success fw-bold">₹' + Number(tot).toFixed(2) + '</span></div>'; }).join('') : '<div class="list-group-item text-muted">No recent orders</div>';
+
+      // Charts derived from recent orders (simple but looks like real dashboards)
+      var orders = recent.slice().reverse();
+      var labels = orders.map(function(o){ return (o.order_date || '').slice(5,10) || ('#' + o.id); });
+      var revenue = orders.map(function(o){
+        var tot = (o.order_total != null ? o.order_total : (o.quantity * (o.product && o.product.price || 0)));
+        return Number(tot || 0);
+      });
+
+      var ctx1 = document.getElementById('vendorRevenueChart');
+      if (ctx1) {
+        if (revenueChart) revenueChart.destroy();
+        revenueChart = new Chart(ctx1, {
+          type: 'line',
+          data: { labels: labels, datasets: [{ label: 'Revenue', data: revenue, tension: 0.35, borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.15)', fill: true }] },
+          options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+        });
+      }
+
+      var statusCounts = {};
+      recent.forEach(function(o){ var st = (o.status || 'pending'); statusCounts[st] = (statusCounts[st]||0)+1; });
+      var stLabels = Object.keys(statusCounts);
+      var stData = stLabels.map(function(k){ return statusCounts[k]; });
+      var ctx2 = document.getElementById('vendorStatusChart');
+      if (ctx2) {
+        if (statusChart) statusChart.destroy();
+        statusChart = new Chart(ctx2, {
+          type: 'doughnut',
+          data: { labels: stLabels, datasets: [{ data: stData, backgroundColor: ['#0ea5e9','#f97316','#22c55e','#a855f7','#ef4444'] }] },
+          options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+        });
+      }
+    }
+
+    (async function loadCategories() {
+      var sel = document.getElementById('add-category');
+      if (!sel) return;
+
+      async function fetchCats() {
+        var r = await apiGet('/categories');
+        if (!r.ok) return [];
+        return r.json();
+      }
+
+      function buildDropdown(cats) {
+        cats = Array.isArray(cats) ? cats : [];
+        if (!cats.length) return null;
+
+        function normCategoryKey(name) {
+          return String(name || '').trim().toLowerCase().replace(/s$/, '');
+        }
+
+        var byName = {};
+        cats.forEach(function(c) {
+          if (c && c.name) byName[normCategoryKey(c.name)] = c;
+        });
+
+        var preferred = [
+          { label: 'Fruits', keys: ['fruit'] },
+          { label: 'Vegetables', keys: ['vegetable'] },
+          { label: 'Juice', keys: ['juice'] },
+          { label: 'Dried', keys: ['dried'] }
+        ];
+
+        var opts = [];
+        preferred.forEach(function(p) {
+          var matched = null;
+          p.keys.some(function(k) {
+            if (byName[k]) { matched = byName[k]; return true; }
+            return false;
+          });
+          if (matched) opts.push('<option value="' + matched.id + '">' + p.label + '</option>');
+        });
+
+        return opts.length ? opts.join('') : null;
+      }
+
+      try {
+        var cats = await fetchCats();
+        var dropdownHtml = buildDropdown(cats);
+
+        // If empty, seed required categories (including Dried) then reload.
+        if (!dropdownHtml) {
+          var defaults = [
+            { name: 'Vegetables', description: 'Fresh vegetables and produce' },
+            { name: 'Juice', description: 'Fresh and packaged juices' },
+            { name: 'Fruits', description: 'Fresh fruits' },
+            { name: 'Dried', description: 'Dried fruits and pantry items' }
+          ];
+
+          for (var i = 0; i < defaults.length; i++) {
+            try {
+              await apiPost('/categories', defaults[i]);
+            } catch (e) {
+              // Ignore if already exists or seed fails; we'll re-fetch after.
+            }
+          }
+
+          cats = await fetchCats();
+          dropdownHtml = buildDropdown(cats);
+        }
+
+        if (dropdownHtml) {
+          sel.innerHTML = dropdownHtml;
+        } else {
+          sel.innerHTML = '<option value="">Categories not available</option>';
+          showAlert('Categories could not be loaded. Check DB/table `categories` and Flask logs.', 'danger');
+        }
+      } catch (err) {
+        sel.innerHTML = '<option value="">Categories not available</option>';
+        showAlert('Failed to load categories. Check backend connection.', 'danger');
+      }
+    })();
+
+    document.getElementById('addProductForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var payload = {
+        name: document.getElementById('add-name').value.trim(),
+        category_id: parseInt(document.getElementById('add-category').value, 10),
+        price: parseFloat(document.getElementById('add-price').value),
+        stock_quantity: parseInt(document.getElementById('add-stock').value, 10) || 0,
+        description: document.getElementById('add-desc').value.trim()
+      };
+      try {
+        var res = await apiPost('/vendor/products', payload);
+        if (redirectIfUnauthorized(res)) return;
+        var data = await res.json().catch(function() { return {}; });
+        if (res.ok) {
+          showAlert('Product added successfully.', 'success');
+          document.getElementById('addProductForm').reset();
+          dashboardData = null;
+        } else {
+          showAlert((data && data.error) ? data.error : 'Failed to add product.', 'danger');
+        }
+      } catch (err) {
+        showAlert('Cannot reach server.', 'danger');
+      }
+    });
+
+    function loadMyProducts() {
+      apiGet('/vendor/products?per_page=50')
+        .then(function(r) {
+          if (redirectIfUnauthorized(r)) return null;
+          return r.json().catch(function() { return {}; });
+        })
+        .then(function(data) {
+          if (!data) return;
+          var tbody = document.getElementById('my-products-tbody');
+          var list = (data && data.products) ? data.products : [];
+          tbody.innerHTML = list.map(function(p) {
+            return '<tr><td>' + (p.name || '') + '</td><td>' + (p.category_name || '') + '</td><td>₹' + (p.price != null ? Number(p.price).toFixed(2) : '') + '</td><td>' + (p.stock_quantity ?? '') + '</td><td>' + (p.updated_at || '').slice(0, 10) + '</td></tr>';
+          }).join('') || '<tr><td colspan="5" class="text-muted">No products</td></tr>';
+        })
+        .catch(function() { showAlert('Failed to load products.', 'danger'); });
+    }
+
+    function loadEditSelect(thenSelectId) {
+      return apiGet('/vendor/products?per_page=100')
+        .then(function(r) {
+          if (redirectIfUnauthorized(r)) return null;
+          return r.json().catch(function() { return {}; });
+        })
+        .then(function(data) {
+          if (!data) return;
+          var list = (data.products) ? data.products : [];
+          var sel = document.getElementById('edit-select');
+          if (!sel) return;
+          sel.innerHTML = '<option value="">-- Select product --</option>' + list.map(function(p) { return '<option value="' + p.id + '" data-price="' + p.price + '" data-stock="' + p.stock_quantity + '">' + p.name + '</option>'; }).join('');
+          sel.onchange = function() {
+            var opt = sel.options[sel.selectedIndex];
+            if (!opt || !opt.value) { document.getElementById('edit-form-wrap').style.display = 'none'; return; }
+            document.getElementById('edit-id').value = opt.value;
+            document.getElementById('edit-price').value = opt.getAttribute('data-price');
+            document.getElementById('edit-stock').value = opt.getAttribute('data-stock');
+            document.getElementById('edit-form-wrap').style.display = 'block';
+          };
+          if (thenSelectId) setEditProductId(String(thenSelectId));
+        })
+        .catch(function() { showAlert('Failed to load products.', 'danger'); });
+    }
+
+    document.getElementById('edit-save').addEventListener('click', async function() {
+      var id = document.getElementById('edit-id').value;
+      if (!id) return;
+      var payload = {
+        price: parseFloat(document.getElementById('edit-price').value),
+        stock_quantity: parseInt(document.getElementById('edit-stock').value, 10)
+      };
+      try {
+        var res = await apiPut('/vendor/products/' + id, payload);
+        if (redirectIfUnauthorized(res)) return;
+        var data = await res.json().catch(function() { return {}; });
+        if (res.ok) {
+          showAlert('Product updated.', 'success');
+          loadEditSelect();
+          dashboardData = null;
+        } else {
+          showAlert((data && data.error) ? data.error : 'Update failed.', 'danger');
+        }
+      } catch (err) { showAlert('Cannot reach server.', 'danger'); }
+    });
+
+    function loadDeleteProducts() {
+      apiGet('/vendor/products?per_page=100')
+        .then(function(r) {
+          if (redirectIfUnauthorized(r)) return null;
+          return r.json().catch(function() { return {}; });
+        })
+        .then(function(data) {
+          if (!data) return;
+          var list = (data.products) ? data.products : [];
+          var tbody = document.getElementById('delete-products-tbody');
+          tbody.innerHTML = list.map(function(p) {
+            return '<tr><td>' + p.name + '</td><td>' + (p.category_name || '') + '</td><td>₹' + Number(p.price).toFixed(2) + '</td><td><button type="button" class="btn btn-sm btn-outline-danger delete-product-btn" data-id="' + p.id + '">Delete</button></td></tr>';
+          }).join('') || '<tr><td colspan="4" class="text-muted">No products</td></tr>';
+          tbody.querySelectorAll('.delete-product-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+              if (!confirm('Delete this product?')) return;
+              var id = this.getAttribute('data-id');
+              apiDelete('/vendor/products/' + id)
+                .then(function(r) {
+                  if (redirectIfUnauthorized(r)) return null;
+                  return r.json().catch(function() { return {}; });
+                })
+                .then(function(d) {
+                  if (!d) return;
+                  showAlert((d.message) ? d.message : 'Deleted.', 'success');
+                  loadDeleteProducts();
+                  dashboardData = null;
+                })
+                .catch(function() { showAlert('Delete failed.', 'danger'); });
+            });
+          });
+        })
+        .catch(function() { showAlert('Failed to load products.', 'danger'); });
+    }
+
+    function loadOrders() {
+      apiGet('/vendor/orders?per_page=50')
+        .then(function(r) {
+          if (redirectIfUnauthorized(r)) return null;
+          return r.json().catch(function() { return {}; });
+        })
+        .then(function(data) {
+          if (!data) return;
+          var list = (data.orders) ? data.orders : [];
+          var tbody = document.getElementById('orders-tbody');
+          tbody.innerHTML = list.map(function(o) {
+            var tot = (o.order_total != null ? o.order_total : (o.quantity * (o.product && o.product.price || 0)));
+            var st = (o.status || 'pending');
+            var sel =
+              '<select class="form-select form-select-sm vendor-status" data-id="' + (o.id || '') + '" style="min-width:160px;">' +
+              ['pending','confirmed','shipped','delivered','cancelled'].map(function(s){ return '<option value=\"' + s + '\"' + (s===st?' selected':'') + '>' + s + '</option>'; }).join('') +
+              '</select>';
+            var statusClass = 'status-' + st;
+            return '<tr><td>' + (o.id || '') + '</td><td>' + (o.product && o.product.name || '') + '</td><td>' + (o.quantity || '') + '</td><td>₹' + Number(tot).toFixed(2) + '</td><td><span class=\"status-pill ' + statusClass + '\">' + st + '</span></td><td>' + sel + '</td><td>' + (o.order_date || '').slice(0, 10) + '</td></tr>';
+          }).join('') || '<tr><td colspan="7" class="text-muted">No orders</td></tr>';
+
+          tbody.querySelectorAll('.vendor-status').forEach(function(sel){
+            sel.addEventListener('change', function(){
+              var id = this.getAttribute('data-id');
+              var status = this.value;
+              apiPut('/vendor/orders/' + id + '/status', { status: status })
+                .then(function(r){
+                  if (redirectIfUnauthorized(r)) return null;
+                  return r.json().catch(function(){ return {}; });
+                })
+                .then(function(resp){
+                  if (!resp) return;
+                  if (resp.error) showAlert(resp.error, 'danger');
+                  else {
+                    showAlert('Order status updated.', 'success');
+                    dashboardData = null;
+                    loadOrders();
+                  }
+                })
+                .catch(function(){ showAlert('Failed to update status.', 'danger'); });
+            });
+          });
+        })
+        .catch(function() { showAlert('Failed to load orders.', 'danger'); });
+    }
+
+    (function init() {
+      if (!token || !user) {
+        window.location.href = '/vendor/login';
+        return;
+      }
+      var role = (user.role || '').toLowerCase();
+      if (role !== 'vendor' && role !== 'admin') {
+        window.location.href = '/vendor/login';
+        return;
+      }
+      var parsed = parsePath();
+      showSection(parsed.section, parsed.editId);
+    })();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

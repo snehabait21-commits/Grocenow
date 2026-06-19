@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Contact Us | GroceNow</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/open-iconic-bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/animate.css') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/owl.theme.default.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/aos.css') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ionicons.min.css') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-datepicker.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.timepicker.css') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/flaticon.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/icomoon.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+      /* Contact page only — keeps rest of site unchanged */
+      .contact-page-hero .bread { letter-spacing: 0.05em; }
+      .contact-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        height: 100%;
+      }
+      .contact-card:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(0,0,0,0.09); }
+      .contact-card .icon-wrap {
+        width: 48px; height: 48px; border-radius: 12px;
+        background: rgba(127, 173, 57, 0.15);
+        color: #7fad39;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.25rem; margin-bottom: 1rem;
+      }
+      .contact-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: #1a1a1a; }
+      .contact-card p, .contact-card a { margin: 0; color: #555; font-size: 0.95rem; }
+      .contact-map-wrap {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        min-height: 420px;
+        position: relative;
+        background: #e9ecef;
+      }
+      .contact-map-wrap iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+      .contact-form-panel {
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+      }
+      .contact-form-panel .form-control:focus {
+        border-color: #7fad39;
+        box-shadow: 0 0 0 0.2rem rgba(127, 173, 57, 0.2);
+      }
+      .contact-hours { border-left: 4px solid #7fad39; }
+      .contact-intro { max-width: 720px; margin: 0 auto; }
+      #contact-form-alert .alert { border-radius: 10px; }
+    </style>
+  </head>
+  <body class="goto-here">
+		<div class="py-1 bg-primary">
+    	<div class="container">
+    		<div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
+	    		<div class="col-lg-12 d-block">
+		    		<div class="row d-flex">
+		    			<div class="col-md pr-4 d-flex topper align-items-center">
+					    	<div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-phone2"></span></div>
+						    <span class="text">+ 1235 2355 98</span>
+					    </div>
+					    <div class="col-md pr-4 d-flex topper align-items-center">
+					    	<div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-paper-plane"></span></div>
+						    <span class="text">youremail@email.com</span>
+					    </div>
+					    <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
+						    <span class="text">3-5 Business days delivery &amp; Free Returns</span>
+					    </div>
+				    </div>
+			    </div>
+		    </div>
+		  </div>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container">
+	      <a class="navbar-brand" href="{{ url_for('user_pages.load_page', page='index') }}">GroceNow</a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> Menu
+	      </button>
+
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	             <li class="nav-item">
+  <a href="{{ url_for('user_pages.load_page', page='index') }}" class="nav-link">Home</a>
+</li>
+	         <li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
+     aria-haspopup="true" aria-expanded="false">Shop</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown04">
+    <a class="dropdown-item" href="{{ url_for('user_pages.load_page', page='shop') }}">Shop</a>
+    <a class="dropdown-item" href="{{ url_for('user_pages.load_page', page='wishlist') }}">Wishlist</a>
+    <a class="dropdown-item" href="{{ url_for('user_pages.load_page', page='product-single') }}">Single Product</a>
+    <a class="dropdown-item" href="{{ url_for('user_pages.load_page', page='cart') }}">Cart</a>
+    <a class="dropdown-item" href="{{ url_for('user_pages.load_page', page='checkout') }}">Checkout</a>
+  </div>
+</li>
+
+	         <li class="nav-item">
+  <a href="{{ url_for('user_pages.load_page', page='about') }}" class="nav-link">About</a>
+</li>
+
+<li class="nav-item">
+  <a href="{{ url_for('user_pages.load_page', page='blog') }}" class="nav-link">Blog</a>
+</li>
+
+<li class="nav-item cta cta-colored">
+  <a href="{{ url_for('user_pages.load_page', page='contact') }}" class="nav-link">Contact</a>
+</li>
+
+<li class="nav-item">
+  <a href="{{ url_for('user_pages.load_page', page='login') }}" class="nav-link">
+    <span class="icon-user"></span> Login
+  </a>
+</li>
+	          <li class="nav-item">
+  <a href="{{ url_for('user_pages.load_page', page='cart') }}" class="nav-link">
+    <span class="icon-shopping_cart"></span>[0]
+  </a>
+</li>
+
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+    <!-- END nav -->
+
+    <div class="hero-wrap hero-bread contact-page-hero"
+         style="background-image: url('{{ url_for('static', filename='images/bg_1.jpg') }}');">
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+            <p class="breadcrumbs">
+              <span class="mr-2"><a href="{{ url_for('user_pages.load_page', page='index') }}">Home</a></span>
+              <span class="mr-2">/</span>
+              <span>Contact</span>
+            </p>
+            <h1 class="mb-2 bread">Contact us</h1>
+            <p class="mb-0" style="font-size: 1rem; color: rgba(255,255,255,0.92);">We’re here for orders, delivery, and support — reach out anytime.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="ftco-section contact-section bg-light pt-5">
+      <div class="container">
+        <div class="row justify-content-center mb-5">
+          <div class="col-md-10 text-center ftco-animate contact-intro">
+            <h2 class="mb-3" style="font-weight: 600; color: #1a1a1a;">Get in touch</h2>
+            <p class="text-muted mb-0">Questions about your order, bulk purchases, or partnering with GroceNow? Send us a message or use the options below. We usually reply within one business day.</p>
+          </div>
+        </div>
+
+        <div class="row mb-5">
+          <div class="col-md-3 d-flex mb-4 mb-md-0 ftco-animate">
+            <div class="info bg-white p-4 contact-card w-100">
+              <div class="icon-wrap"><span class="icon-map-marker"></span></div>
+              <h3>Visit us</h3>
+              <p>Sanpada, Navi Mumbai,<br>Maharashtra 400705, India</p>
+              <a href="https://www.openstreetmap.org/?mlat=19.11565&amp;mlon=72.99495#map=16/19.11565/72.99495" target="_blank" rel="noopener noreferrer">Open in maps ↗</a>
+            </div>
+          </div>
+          <div class="col-md-3 d-flex mb-4 mb-md-0 ftco-animate">
+            <div class="info bg-white p-4 contact-card w-100">
+              <div class="icon-wrap"><span class="icon-phone2"></span></div>
+              <h3>Call us</h3>
+              <p><a href="tel:+911234567890">+91 12345 67890</a></p>
+              <p class="text-muted small mt-2 mb-0">Mon–Sat, 9:00 – 20:00 IST</p>
+            </div>
+          </div>
+          <div class="col-md-3 d-flex mb-4 mb-md-0 ftco-animate">
+            <div class="info bg-white p-4 contact-card w-100">
+              <div class="icon-wrap"><span class="icon-paper-plane"></span></div>
+              <h3>Email</h3>
+              <p><a href="mailto:grocenow@email.com">grocenow@email.com</a></p>
+              <p class="text-muted small mt-2 mb-0">For support &amp; general queries</p>
+            </div>
+          </div>
+          <div class="col-md-3 d-flex ftco-animate">
+            <div class="info bg-white p-4 contact-card w-100">
+              <div class="icon-wrap"><span class="icon-chat"></span></div>
+              <h3>Quick chat</h3>
+              <p><a href="https://wa.me/911234567890" target="_blank" rel="noopener noreferrer">WhatsApp us</a></p>
+              <p class="text-muted small mt-2 mb-0">Fast answers for order status</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-5">
+          <div class="col-lg-4 ftco-animate mb-4 mb-lg-0">
+            <div class="bg-white p-4 contact-card contact-hours h-100">
+              <h3 class="mb-3" style="font-size: 1.1rem; font-weight: 600;">Support hours</h3>
+              <ul class="list-unstyled mb-4 text-muted small">
+                <li class="d-flex justify-content-between py-2 border-bottom"><span>Monday – Friday</span><span>9:00 – 20:00</span></li>
+                <li class="d-flex justify-content-between py-2 border-bottom"><span>Saturday</span><span>9:00 – 18:00</span></li>
+                <li class="d-flex justify-content-between py-2"><span>Sunday</span><span>10:00 – 16:00</span></li>
+              </ul>
+              <p class="small text-muted mb-0">Delivery times may vary by area. Track your order from your account after checkout.</p>
+            </div>
+          </div>
+          <div class="col-lg-8 ftco-animate">
+            <div class="contact-map-wrap w-100" aria-label="Map showing GroceNow area near Sanpada, Navi Mumbai">
+              <!-- OpenStreetMap embed: real tiles + marker at Sanpada (no API key) -->
+              <iframe title="Map — Sanpadā, Navi Mumbai"
+                      loading="lazy"
+                      src="https://www.openstreetmap.org/export/embed.html?bbox=72.9875%2C19.1108%2C73.0024%2C19.1202&amp;layer=mapnik&amp;marker=19.11565%2C72.99495"></iframe>
+            </div>
+            <p class="small text-muted mt-2 mb-0 text-center">
+              <a href="https://www.google.com/maps/dir/?api=1&amp;destination=19.11565,72.99495" target="_blank" rel="noopener noreferrer">Get directions in Google Maps ↗</a>
+            </p>
+          </div>
+        </div>
+
+        <div class="row block-9 justify-content-center">
+          <div class="col-lg-10 ftco-animate">
+            <div id="contact-form-alert" class="mb-3" style="display:none;"></div>
+            <form id="grocenow-contact-form" class="bg-white p-4 p-md-5 contact-form contact-form-panel" action="#" method="post" novalidate>
+              <h3 class="mb-4" style="font-weight: 600;">Send a message</h3>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label class="small font-weight-bold text-muted" for="contact-name">Full name</label>
+                  <input type="text" id="contact-name" name="name" class="form-control" placeholder="Your name" required autocomplete="name">
+                </div>
+                <div class="form-group col-md-6">
+                  <label class="small font-weight-bold text-muted" for="contact-email">Email</label>
+                  <input type="email" id="contact-email" name="email" class="form-control" placeholder="you@example.com" required autocomplete="email">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="small font-weight-bold text-muted" for="contact-phone">Phone <span class="text-muted font-weight-normal">(optional)</span></label>
+                <input type="tel" id="contact-phone" name="phone" class="form-control" placeholder="+91 …" autocomplete="tel">
+              </div>
+              <div class="form-group">
+                <label class="small font-weight-bold text-muted" for="contact-topic">Topic</label>
+                <select id="contact-topic" name="topic" class="form-control" required>
+                  <option value="" disabled selected>Choose a topic…</option>
+                  <option value="Order / delivery">Order &amp; delivery</option>
+                  <option value="Returns / refund">Returns &amp; refunds</option>
+                  <option value="Product quality">Product quality</option>
+                  <option value="Vendor partnership">Vendor partnership</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="small font-weight-bold text-muted" for="contact-message">Message</label>
+                <textarea id="contact-message" name="message" cols="30" rows="6" class="form-control" placeholder="How can we help?" required></textarea>
+              </div>
+              <div class="form-group mb-0">
+                <button type="submit" class="btn btn-primary py-3 px-5">Send message</button>
+                <span class="ml-3 small text-muted d-inline-block mt-2 mt-sm-0">We’ll respond by email as soon as we can.</span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      (function () {
+        var form = document.getElementById('grocenow-contact-form');
+        var alertBox = document.getElementById('contact-form-alert');
+        if (!form) return;
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+          }
+          var name = document.getElementById('contact-name').value.trim();
+          var email = document.getElementById('contact-email').value.trim();
+          var phone = document.getElementById('contact-phone').value.trim();
+          var topic = document.getElementById('contact-topic').value;
+          var message = document.getElementById('contact-message').value.trim();
+          var body = 'Name: ' + name + '\nEmail: ' + email + '\nPhone: ' + (phone || '—') + '\nTopic: ' + topic + '\n\n' + message;
+          var mailto = 'mailto:grocenow@email.com?subject=' + encodeURIComponent('[GroceNow] ' + topic) + '&body=' + encodeURIComponent(body);
+          try { window.location.href = mailto; } catch (err) {}
+          alertBox.style.display = 'block';
+          alertBox.innerHTML = '<div class="alert alert-success border-0 shadow-sm" role="alert"><strong>Thank you!</strong> Your email app should open with your message. If it did not, email us at <a href="mailto:grocenow@email.com">grocenow@email.com</a>.</div>';
+          form.reset();
+        });
+      })();
+    </script>
+
+    <footer class="ftco-footer ftco-section bg-light">
+      <div class="container">
+      	<div class="row">
+      		<div class="mouse">
+						<a href="#" class="mouse-icon">
+							<div class="mouse-wheel"><span class="ion-ios-arrow-up"></span></div>
+						</a>
+					</div>
+      	</div>
+        <div class="row mb-5">
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">GroceNow</h2>
+              <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</p>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-5">
+              <h2 class="ftco-heading-2">Menu</h2>
+              <ul class="list-unstyled">
+                <li><a href="{{ url_for('user_pages.load_page', page='shop') }}">Shop</a></li>
+                <li><a href="{{ url_for('user_pages.load_page', page='index') }}">Home</a></li>
+                <li><a href="{{ url_for('user_pages.load_page', page='about') }}">About</a></li>
+                <li><a href="{{ url_for('user_pages.load_page', page='contact') }}">Contact Us</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4">
+             <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Help</h2>
+              <div class="d-flex">
+	              <ul class="list-unstyled mr-l-5 pr-l-3 mr-4">
+	                <li><a href="{{ url_for('user_pages.load_page', page='contact') }}">Shipping Information</a></li>
+	                <li><a href="{{ url_for('user_pages.load_page', page='shop') }}">Returns &amp; Exchange</a></li>
+	                <li><a href="{{ url_for('user_pages.load_page', page='about') }}">Terms &amp; Conditions</a></li>
+	                <li><a href="{{ url_for('user_pages.load_page', page='about') }}">Privacy Policy</a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon icon-map-marker"></span><span class="text">Sanpada, Navi Mumbai, INDIA</span></li>
+	                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+91 1234567890</span></a></li>
+	                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">grocenow@email.com</span></a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+
+            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+						  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    
+  
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery-migrate-3.0.1.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.easing.1.3.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.waypoints.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.stellar.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.magnific-popup.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/aos.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.animateNumber.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap-datepicker.js') }}"></script>
+<script src="{{ url_for('static', filename='js/scrollax.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/grocenow-store.js') }}"></script>
+    
+  </body>
+</html>

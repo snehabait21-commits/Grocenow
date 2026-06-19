@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Products - GroceNow Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    :root { --sidebar: 250px; }
+    body { background:#f3f5f9; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .sidebar {
+      position: fixed; left: 0; top: 0; width: var(--sidebar); height: 100vh;
+      background: linear-gradient(180deg, #0b1220 0%, #101c35 100%);
+      color: rgba(255,255,255,0.9); padding: 18px 14px;
+      box-shadow: 6px 0 28px rgba(2,6,23,0.25);
+    }
+    .brand { display:flex; align-items:center; gap:10px; padding: 8px 10px 18px; border-bottom:1px solid rgba(255,255,255,0.12); }
+    .brand .logo { width:38px; height:38px; border-radius:12px; display:flex; align-items:center; justify-content:center; background: rgba(14,165,233,0.18); color: #7dd3fc; }
+    .brand strong { color:#fff; }
+    .nav-link { color: rgba(255,255,255,0.86); border-radius: 10px; padding: 10px 12px; margin: 4px 6px; display:flex; align-items:center; gap:10px; }
+    .nav-link:hover { background: rgba(255,255,255,0.10); color:#fff; }
+    .nav-link.active { background: rgba(14,165,233,0.22); border: 1px solid rgba(125,211,252,0.28); color:#fff; }
+    .content { margin-left: var(--sidebar); padding: 22px; }
+    .card-soft { border: none; border-radius: 14px; box-shadow: 0 2px 16px rgba(15,23,42,0.08); }
+    .metric { font-size: 24px; font-weight: 800; color:#0f172a; line-height:1; }
+    .label { color:#64748b; font-size: 13px; }
+    .pointer { cursor: pointer; }
+    .table th { white-space: nowrap; }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo"><i class="bi bi-shield-check"></i></div>
+      <div>
+        <strong>GroceNow</strong>
+        <div class="small text-white-50">Admin Panel</div>
+      </div>
+    </div>
+    <nav class="mt-3">
+      <a class="nav-link" href="{{ url_for('admin.admin_dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a class="nav-link active" href="{{ url_for('admin.admin_products') }}"><i class="bi bi-box-seam"></i> Products</a>
+      <a class="nav-link" href="{{ url_for('admin.admin_logout') }}"><i class="bi bi-box-arrow-left"></i> Logout</a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="d-flex flex-wrap align-items-center justify-content-between mb-3 gap-2">
+      <div>
+        <div class="h4 mb-0 fw-bold text-dark">Product Management</div>
+        <div class="text-muted small">Manage catalog, pricing, and stock levels</div>
+      </div>
+      <a href="{{ url_for('admin.admin_add_product') }}" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-1"></i>Add Product
+      </a>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-md-3">
+        <div class="card card-soft p-3">
+          <div class="metric" id="totalProducts">0</div>
+          <div class="label">Total Products</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card card-soft p-3">
+          <div class="metric text-success" id="inStockProducts">0</div>
+          <div class="label">In Stock</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card card-soft p-3">
+          <div class="metric text-warning" id="lowStockProducts">0</div>
+          <div class="label">Low Stock (1-9)</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card card-soft p-3">
+          <div class="metric text-danger" id="outOfStockProducts">0</div>
+          <div class="label">Out of Stock</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-soft mb-3">
+      <div class="card-body">
+        <div class="row g-2">
+          <div class="col-md-5">
+            <label class="form-label small text-muted mb-1">Search</label>
+            <input id="searchInput" type="text" class="form-control" placeholder="Search by product name...">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label small text-muted mb-1">Category</label>
+            <select id="categoryFilter" class="form-select">
+              <option value="">All Categories</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small text-muted mb-1">Stock</label>
+            <select id="stockFilter" class="form-select">
+              <option value="">All</option>
+              <option value="in">In Stock</option>
+              <option value="low">Low Stock</option>
+              <option value="out">Out of Stock</option>
+            </select>
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <button id="clearFiltersBtn" class="btn btn-outline-secondary w-100">Clear Filters</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-soft">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table align-middle" id="productsTable">
+            <thead>
+              <tr>
+                <th class="pointer" data-sort="id">ID <i class="bi bi-arrow-down-up small"></i></th>
+                <th class="pointer" data-sort="name">Name <i class="bi bi-arrow-down-up small"></i></th>
+                <th class="pointer" data-sort="category">Category <i class="bi bi-arrow-down-up small"></i></th>
+                <th class="pointer text-end" data-sort="price">Price <i class="bi bi-arrow-down-up small"></i></th>
+                <th class="pointer text-end" data-sort="stock">Stock <i class="bi bi-arrow-down-up small"></i></th>
+                <th>Status</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="productsBody">
+              {% for product in products %}
+              <tr
+                data-id="{{ product.id }}"
+                data-name="{{ product.name|lower }}"
+                data-category="{{ (product.category.name if product.category else 'Uncategorized')|lower }}"
+                data-price="{{ product.price }}"
+                data-stock="{{ product.stock_quantity }}"
+              >
+                <td>{{ product.id }}</td>
+                <td class="fw-semibold">{{ product.name }}</td>
+                <td>{{ product.category.name if product.category else 'Uncategorized' }}</td>
+                <td class="text-end">{{ '%.2f'|format(product.price) }}</td>
+                <td class="text-end">{{ product.stock_quantity }}</td>
+                <td>
+                  {% if product.stock_quantity == 0 %}
+                    <span class="badge text-bg-danger">Out of Stock</span>
+                  {% elif product.stock_quantity < 10 %}
+                    <span class="badge text-bg-warning">Low Stock</span>
+                  {% else %}
+                    <span class="badge text-bg-success">In Stock</span>
+                  {% endif %}
+                </td>
+                <td class="text-end">
+                  <a href="{{ url_for('admin.admin_edit_product', product_id=product.id) }}" class="btn btn-sm btn-outline-primary me-1">
+                    <i class="bi bi-pencil-square"></i> Edit
+                  </a>
+                  <a href="{{ url_for('admin.admin_delete_product', product_id=product.id) }}" class="btn btn-sm btn-outline-danger delete-btn" data-name="{{ product.name }}">
+                    <i class="bi bi-trash"></i> Delete
+                  </a>
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="7" class="text-center text-muted py-4">No products found.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const stockFilter = document.getElementById('stockFilter');
+    const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+    const rows = Array.from(document.querySelectorAll('#productsBody tr[data-id]'));
+    const sortHeaders = document.querySelectorAll('[data-sort]');
+    let sortField = '';
+    let sortDirection = 'asc';
+
+    function updateStats(visibleRows) {
+      const total = visibleRows.length;
+      const inStock = visibleRows.filter(r => Number(r.dataset.stock) >= 10).length;
+      const lowStock = visibleRows.filter(r => Number(r.dataset.stock) > 0 && Number(r.dataset.stock) < 10).length;
+      const outStock = visibleRows.filter(r => Number(r.dataset.stock) === 0).length;
+      document.getElementById('totalProducts').textContent = total;
+      document.getElementById('inStockProducts').textContent = inStock;
+      document.getElementById('lowStockProducts').textContent = lowStock;
+      document.getElementById('outOfStockProducts').textContent = outStock;
+    }
+
+    function ensureCategoryOptions() {
+      const categories = new Set(rows.map(r => r.dataset.category).filter(Boolean));
+      Array.from(categories).sort().forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        option.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+        categoryFilter.appendChild(option);
+      });
+    }
+
+    function applyFilters() {
+      const term = (searchInput.value || '').trim().toLowerCase();
+      const selectedCategory = categoryFilter.value;
+      const selectedStock = stockFilter.value;
+
+      rows.forEach(row => {
+        const name = row.dataset.name || '';
+        const category = row.dataset.category || '';
+        const stock = Number(row.dataset.stock || 0);
+
+        const matchName = !term || name.includes(term);
+        const matchCategory = !selectedCategory || category === selectedCategory;
+        const matchStock = !selectedStock
+          || (selectedStock === 'in' && stock >= 10)
+          || (selectedStock === 'low' && stock > 0 && stock < 10)
+          || (selectedStock === 'out' && stock === 0);
+
+        row.style.display = (matchName && matchCategory && matchStock) ? '' : 'none';
+      });
+
+      const visibleRows = rows.filter(r => r.style.display !== 'none');
+      updateStats(visibleRows);
+    }
+
+    function sortRows(field) {
+      if (sortField === field) {
+        sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortField = field;
+        sortDirection = 'asc';
+      }
+
+      const compare = (a, b) => {
+        let av;
+        let bv;
+        if (field === 'id') {
+          av = Number(a.dataset.id);
+          bv = Number(b.dataset.id);
+        } else if (field === 'price') {
+          av = Number(a.dataset.price);
+          bv = Number(b.dataset.price);
+        } else if (field === 'stock') {
+          av = Number(a.dataset.stock);
+          bv = Number(b.dataset.stock);
+        } else if (field === 'category') {
+          av = a.dataset.category;
+          bv = b.dataset.category;
+        } else {
+          av = a.dataset.name;
+          bv = b.dataset.name;
+        }
+        if (av < bv) return sortDirection === 'asc' ? -1 : 1;
+        if (av > bv) return sortDirection === 'asc' ? 1 : -1;
+        return 0;
+      };
+
+      rows.sort(compare).forEach(row => row.parentNode.appendChild(row));
+      applyFilters();
+    }
+
+    ensureCategoryOptions();
+    applyFilters();
+
+    searchInput.addEventListener('input', applyFilters);
+    categoryFilter.addEventListener('change', applyFilters);
+    stockFilter.addEventListener('change', applyFilters);
+    clearFiltersBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      categoryFilter.value = '';
+      stockFilter.value = '';
+      applyFilters();
+    });
+
+    sortHeaders.forEach(header => {
+      header.addEventListener('click', () => sortRows(header.dataset.sort));
+    });
+
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const productName = btn.dataset.name || 'this product';
+        const ok = window.confirm(`Delete "${productName}"? This action cannot be undone.`);
+        if (!ok) e.preventDefault();
+      });
+    });
+  </script>
+</body>
+</html>
+
